@@ -31,6 +31,7 @@ public class ApplicationConfig extends Application {
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(com.michaeljones.glassfish.jax.rs.uploadservice.FileResource.class);
         resources.add(com.michaeljones.glassfish.jax.rs.uploadservice.FileSystem.class);
+        resources.add(com.michaeljones.glassfish.jax.rs.uploadservice.MountRequestFilter.class);
     }
     
 }
