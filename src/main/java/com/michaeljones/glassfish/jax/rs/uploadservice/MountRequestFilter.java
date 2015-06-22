@@ -49,6 +49,7 @@ public class MountRequestFilter implements ContainerRequestFilter {
         System.out.println("Rebuilt URI: " + mountRedirectUri.build().toString());
         
         crc.setRequestUri(mountRedirectUri.build());
+        crc.setProperty("mprop", "hello world");
     }
 
 }

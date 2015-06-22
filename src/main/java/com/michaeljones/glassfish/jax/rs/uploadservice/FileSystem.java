@@ -5,12 +5,16 @@
  */
 package com.michaeljones.glassfish.jax.rs.uploadservice;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Response;
 
 /**
  * REST Web Service
@@ -22,6 +26,9 @@ public class FileSystem {
 
     @Context
     private UriInfo context;
+    
+    @Context
+    private ContainerRequestContext containerRequestContext;
 
     /**
      * Creates a new instance of FileSystem
@@ -46,7 +53,14 @@ public class FileSystem {
      * Sub-resource locator method for {fileUri}
      */
     @Path("{fileUri}")
-    public FileResource getFileResource(@PathParam("fileUri") String filename) {
+    public FileResource getFileResource(@PathParam("fileUri") String filename, @Context HttpServletRequest request) {
+        Object myProp = this.containerRequestContext.getProperty("mprop");
+        if (myProp == null) {
+            throw new WebApplicationException("must be michael", Response.Status.INTERNAL_SERVER_ERROR);
+        }
+        
+        System.out.println("Retrieved property: " + myProp.toString());
+        
         return FileResource.getInstance(filename);
     }
 }
