@@ -2,6 +2,8 @@
 Restful file upload service hosted in GlassFish web server. Java JAX-RS, Maven.
 
 ## Functionality so far
+Note: this project is on hold at the moment, I have become busy with other things, but intend to return to it.
+
 Just started, currently can send files to this server using curl. The server reads the octet stream, but other than printing out how many bytes it read, does nothing.
 
   curl -X PUT http://localhost:8080/glassfish-jax-rs-UploadServer/webresources/fs/hello.txt -T hello.txt 
