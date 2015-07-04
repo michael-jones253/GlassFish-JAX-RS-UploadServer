@@ -29,7 +29,6 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(com.michaeljones.glassfish.jax.rs.uploadservice.FileResource.class);
         resources.add(com.michaeljones.glassfish.jax.rs.uploadservice.FileSystem.class);
         resources.add(com.michaeljones.glassfish.jax.rs.uploadservice.MountRequestFilter.class);
     }
