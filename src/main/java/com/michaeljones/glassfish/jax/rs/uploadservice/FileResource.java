@@ -29,21 +29,26 @@ import javax.ws.rs.core.MediaType;
 public class FileResource {
 
     private String filename;
+    private MountInterface mount;
 
     /**
      * Creates a new instance of FileResource
      */
-    private FileResource(String filename) {
+    private FileResource(MountInterface mount, String filename) {
         this.filename = filename;
+        this.mount = mount;
     }
 
     /**
      * Get instance of the FileResource
+     * @param mount
+     * @param filename
+     * @return 
      */
-    public static FileResource getInstance(String filename) {
+    public static FileResource getInstance(MountInterface mount, String filename) {
         // The user may use some kind of persistence mechanism
         // to store and restore instances of FileResource class.
-        return new FileResource(filename);
+        return new FileResource(mount, filename);
     }
 
     /**
@@ -80,6 +85,7 @@ public class FileResource {
 
     private void doPutOctetStream(@Context final HttpServletRequest request) {
         try {
+            Object handle = mount.GetHandleForWrite(filename);
             request.getContentType();
             String method = request.getMethod();
             ServletInputStream inputStream = request.getInputStream();
@@ -87,14 +93,17 @@ public class FileResource {
             int count = 0;
             while (true) {
                 int bytes = inputStream.read(b);
-                System.out.println("Stream read: " + count);
+                System.out.println("Stream read: " + bytes);
                 if (bytes < 0) {
                     break;
                 }
+
+                this.mount.WriteAllBytes(handle, b, bytes);
                 count += bytes;
             }
             
             System.out.println("Total bytes from stream: " + count);
+            mount.CloseHandle(handle);
         } catch (IOException ex) {
             Logger.getLogger(FileResource.class.getName()).log(Level.SEVERE, null, ex);
         }

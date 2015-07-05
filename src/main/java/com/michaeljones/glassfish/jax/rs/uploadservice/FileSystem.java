@@ -29,7 +29,7 @@ public class FileSystem {
     
     @Context
     private ContainerRequestContext containerRequestContext;
-
+    
     /**
      * Creates a new instance of FileSystem
      */
@@ -61,6 +61,6 @@ public class FileSystem {
         
         System.out.println("Retrieved property: " + myProp.toString());
         
-        return FileResource.getInstance(filename);
+        return FileResource.getInstance((MountInterface)myProp, filename);
     }
 }

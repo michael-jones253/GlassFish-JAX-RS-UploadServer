@@ -6,6 +6,7 @@
 package com.michaeljones.glassfish.jax.rs.uploadserver;
 
 import com.michaeljones.glassfish.jax.rs.uploadservice.MountRequestFilter;
+import com.michaeljones.glassfish.jax.rs.uploadservice.devnull.DevNullMount;
 import java.util.Set;
 import javax.ws.rs.core.Application;
 
@@ -15,13 +16,20 @@ import javax.ws.rs.core.Application;
  */
 @javax.ws.rs.ApplicationPath("webresources")
 public class ApplicationConfig extends Application {
+    
+    private final DevNullMount devNull;
+
+    public ApplicationConfig() {
+        this.devNull = new DevNullMount();
+    }
 
     @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new java.util.HashSet<>();
         addRestResourceClasses(resources);
         
-        MountRequestFilter.AddMount("null", null);
+        // This is where we add all the mounts that this upload server writes files to.
+        MountRequestFilter.AddMount("devnull", devNull);
         return resources;
     }
 
