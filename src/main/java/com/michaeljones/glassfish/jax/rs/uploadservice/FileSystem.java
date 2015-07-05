@@ -56,7 +56,7 @@ public class FileSystem {
     public FileResource getFileResource(@PathParam("fileUri") String filename, @Context HttpServletRequest request) {
         Object myProp = this.containerRequestContext.getProperty("mprop");
         if (myProp == null) {
-            throw new WebApplicationException("must be michael", Response.Status.INTERNAL_SERVER_ERROR);
+            throw new WebApplicationException("must be michael", Response.Status.NOT_FOUND);
         }
         
         System.out.println("Retrieved property: " + myProp.toString());

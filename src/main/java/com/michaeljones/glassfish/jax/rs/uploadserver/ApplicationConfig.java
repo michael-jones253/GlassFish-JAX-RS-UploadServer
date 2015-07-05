@@ -5,6 +5,7 @@
  */
 package com.michaeljones.glassfish.jax.rs.uploadserver;
 
+import com.michaeljones.glassfish.jax.rs.uploadservice.MountRequestFilter;
 import java.util.Set;
 import javax.ws.rs.core.Application;
 
@@ -19,6 +20,8 @@ public class ApplicationConfig extends Application {
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new java.util.HashSet<>();
         addRestResourceClasses(resources);
+        
+        MountRequestFilter.AddMount("null", null);
         return resources;
     }
 
@@ -29,6 +32,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(com.michaeljones.glassfish.jax.rs.uploadservice.FileResource.class);
         resources.add(com.michaeljones.glassfish.jax.rs.uploadservice.FileSystem.class);
         resources.add(com.michaeljones.glassfish.jax.rs.uploadservice.MountRequestFilter.class);
     }

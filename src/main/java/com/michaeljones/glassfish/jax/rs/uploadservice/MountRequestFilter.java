@@ -7,7 +7,9 @@ package com.michaeljones.glassfish.jax.rs.uploadservice;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.PreMatching;
@@ -22,6 +24,13 @@ import javax.ws.rs.core.UriBuilder;
 @Provider
 @PreMatching
 public class MountRequestFilter implements ContainerRequestFilter {
+    static Map<String, MountInterface> MOUNT_MAP = new HashMap<>();
+    
+    public static void AddMount(String name, MountInterface mount) {
+        MountInterface put = MOUNT_MAP.put(name, mount);
+        System.out.println("Added mount: " + put);
+    }
+    
     @Override
     public void filter(ContainerRequestContext crc) throws IOException {        
         URI baseUri = crc.getUriInfo().getBaseUri();
@@ -49,7 +58,17 @@ public class MountRequestFilter implements ContainerRequestFilter {
         System.out.println("Rebuilt URI: " + mountRedirectUri.build().toString());
         
         crc.setRequestUri(mountRedirectUri.build());
-        crc.setProperty("mprop", "hello world");
+        
+        String mountName = pathSegments.get(0).getPath();
+        MountInterface mount = MOUNT_MAP.get(mountName);        
+        
+        // If the mount is null then the request handler will throw with an appropriate error.
+        // So just log it and let it through.
+        if (mount == null) {
+            System.out.println("Mount not found: " + mountName);
+        }
+        
+        crc.setProperty("mprop", mount);
     }
 
 }
